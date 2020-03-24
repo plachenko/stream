@@ -2,8 +2,8 @@
   <div class="home">
     <canvas width="640" height="500" ref="can" />
     <img style="display: none;" id="vid" :src="imgData">
-    <a href="#" @click="cur = 0">1</a>
-    <a href="#" @click="cur = 1">2</a>
+    <!-- <a href="#" @click="cur = 0">1</a> -->
+    <!-- <a href="#" @click="cur = 1">2</a> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
   </div>
 </template>
@@ -26,7 +26,7 @@ export default {
   },
   watch:{
     cur(v){
-      this.socket.send(v)
+      // this.socket.send(v)
     }
   },
   mounted(){

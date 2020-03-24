@@ -9,15 +9,16 @@ import websockets
 cam = 0
 
 def get_depth():
-    data = frame_convert2.pretty_depth_cv(freenect.sync_get_depth()[0])
-    #data = data.astype(np.unint8)
+    #data = frame_convert2.pretty_depth_cv(freenect.sync_get_depth()[0])
+    data = freenect.sync_get_depth()[0]
+    data = data.astype(np.uint8)
     img = cv2.imencode('.JPEG', data)[1].tostring()
     enData = base64.b64encode(img).decode('UTF-8')
     return enData
 
-def get_video(c):
+def get_video():
     global cam
-    data = frame_convert2.video_cv(freenect.sync_get_video(c)[0])
+    data = frame_convert2.video_cv(freenect.sync_get_video()[0])
     #data,_ = freenect.sync_get_video()
     #data = cv2.cvtColor(data, cv2.COLOR_RGB2BGR)
     img = cv2.imencode('.JPEG', data)[1].tostring()
@@ -35,10 +36,9 @@ async def show_cam():
 async def server(websocket, path):
     global cam
     while True:
-        await websocket.send(get_video(0))
+        await websocket.send(get_depth())
 
-# start_server = websockets.serve(server, "192.168.0.62", 9000)
-start_server = websockets.serve(server, "0.0.0.0", 9000)
+start_server = websockets.serve(server, port=9000)
 
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
